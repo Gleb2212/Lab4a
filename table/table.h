@@ -1,4 +1,3 @@
-#include <stdio.h>
 
 typedef struct Item{
     char *info;
@@ -24,3 +23,5 @@ typedef struct Table{
     struct KeySpace1 *ks1;
     struct KeySpace2 *ks2;
 }Table;
+
+int add_item(Table *table, int key1, int key2, char *);

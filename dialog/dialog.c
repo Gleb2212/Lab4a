@@ -1,7 +1,6 @@
 #include "dialog.h"
-#include "../table/table.h"
-#include <malloc.h>
-#include <string.h>
+
+const char *errmsgs[] = {"Ok", "Duplicate key", "Table overflow"};
 
 char *getStr() {
     char *ptr = (char *) malloc(1);
@@ -68,24 +67,52 @@ int dialog(const char *msgs[], int N)
 
 
 
-int d_add(struct Table *ptab)
+int d_add(Table *table)
 {
-    int k, rc, n;
+    int key1,key2, rc, n;
     char *info = NULL;
-    printf("Enter key: -->");
-    n = getInt(&k);
+    printf("Enter key for 1st key space: -->");
+    n = getInt(&key1);
+    if(n == 0)
+        return 0;
+    printf("Enter key for 2d key space: -->");
+    n = getInt(&key2);
     if(n == 0)
         return 0;
     printf("Enter info:\n");
     info = getStr();
     if (info == NULL)
         return 0;
-    //TODO
+    rc = add_item(table, key1, key2, &info);
     free(info);
-    printf("%s: %d\n", errmsgs[rc], k);
+    printf("%s: %d\n", errmsgs[rc], key1);
     return 1;
 }
 
-void delTable(struct Table *table){
+void delTable(Table *table){
+    if(table->size > 0){
+        while(table->ks1->next != NULL){
+            struct KeySpace1 *ptr = table->ks1;
+            table->ks1 = table->ks1->next;
+            free(ptr->info->info);
+            free(ptr->info);
+            free(ptr);
+        }
+    }
+    free(table->ks2);
+}
 
+int d_find( Table *table ){
+
+    return 0;
+}
+
+int d_delete( Table *table ){
+
+    return 0;
+}
+
+int d_show( Table *table ){
+
+    return 0;
 }
