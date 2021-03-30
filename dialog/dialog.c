@@ -62,6 +62,7 @@ int dialog(const char *msgs[], int N) {
 
 int d_add(Table *table) {
     int key1, key2, n;
+    bool found1, found2;
     char *info = NULL;
     printf("Enter key for 1st key space: -->");
     n = getInt(&key1);
@@ -77,7 +78,12 @@ int d_add(Table *table) {
     info = getStr();
     if (info == NULL)
         return 1;
-    //TODO find
+    found1 = find(table, key1, 1);
+    found2 = find(table, key2, 2);
+    if(found1 || found2){
+        printf("KEY DUPLICATE");
+        return 1;
+    }
     add_item(table, key1, key2, info);
     return 1;
 }
@@ -94,12 +100,26 @@ void delTable(Table *table) {
     }
     //TODO пройтись по всему пространству и удалить все KeySpace2, которые мы выделяли
 
+
     free(table->ks2);
 }
 
 int d_find(Table *table) {
-//какой ключ и в каком пространстве?
-//TODO
+    int key, n, ks;
+    bool x;
+    printf("Enter key -->");
+    n = getInt(&key);
+    if (n == 0)
+        return 1;
+    printf("Enter key space -->");
+    n = getInt(&ks);
+    if (n == 0)
+        return 1;
+    x = find(table, key, ks);
+    if(x)
+        printf("Success!");
+    else
+        printf("Not found");
     return 1;
 }
 

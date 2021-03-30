@@ -29,4 +29,4 @@ int hash(int, int);
 
 int add_item(Table *table, int key1, int key2, char *);
 
-int find(Table *table, int key, int ks);
+bool find(Table *table, int key, int ks);

@@ -9,7 +9,6 @@ int add_item(Table *table, int key1, int key2, char *info) {
     ptr->info = info;
     ptr->key1 = key1;
     ptr->key2 = key2;
-    //add in the first ks
     if (table->ks1 == NULL) {
         table->ks1 = (KeySpace1 *) calloc(1, sizeof(KeySpace1));
         table->ks1->info = ptr;
@@ -36,6 +35,26 @@ int add_item(Table *table, int key1, int key2, char *info) {
     table->size++;
 }
 
-int find(Table *table, int key, int ks) {
-    return -1; //index если нашел, -1 если не нашел
+bool find(Table *table, int key, int ks) {
+    struct KeySpace1 *ptr1 = table->ks1;
+    if (ks == 1) {
+        while (ptr1 != NULL) {
+            if (key == ptr1->info->key1)
+                return true;
+            ptr1 = ptr1->next;
+        }
+    } else if (ks == 2) {
+        for (int i = 0; i < table->max_size; i++) {
+            struct KeySpace2 *ptr;
+            if (table->ks2[i] != NULL) {
+                ptr = table->ks2[i];
+                while (ptr != NULL) {
+                    if (key == ptr->info->key2)
+                        return true;
+                    ptr = ptr->next;
+                }
+            }
+        }
+    }
+    return false;
 }
